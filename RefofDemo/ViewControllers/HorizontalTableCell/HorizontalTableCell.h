@@ -38,7 +38,7 @@
 //    NSMutableArray *articlesStillDownloading;
 
     
-
+    int alertTag;
     NSString *issueName ;
     
     int sectionSize ; 

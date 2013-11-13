@@ -13,7 +13,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"0ocifrsqmpavocl" appSecret:@"emsp4gcsih0f7oh" root:kDBRootAppFolder];
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"hre7fbxfevcabs7" appSecret:@"u1ok8qyylh04rwd" root:kDBRootAppFolder];
     [DBSession setSharedSession:dbSession];
     
     self.window                 = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

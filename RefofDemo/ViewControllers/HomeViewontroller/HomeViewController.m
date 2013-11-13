@@ -85,6 +85,8 @@
     }
     else
     {
+        indicatorView.hidden = YES ;
+        [activityView stopAnimating];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"خطأ" message:@"لاتوجد ملفات برجاء نقل الملفات الى الفولدر المضاف الى حسابك!" delegate:nil cancelButtonTitle:@"تم" otherButtonTitles:nil, nil];
         [alert show];
         [alert release];
@@ -107,9 +109,13 @@
 
 - (void)restClient:(DBRestClient*)restClient loadStreamableURLFailedWithError:(NSError *)error
 {
+    indicatorView.hidden = YES ;
+    [activityView stopAnimating];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"خطأ" message:@"خطأ في تحميل الملفات يرجى معاودة التحميل!" delegate:nil cancelButtonTitle:@"تم" otherButtonTitles:nil, nil];
     [alert show];
     [alert release];
+    
+    
    // NSLog(@"%@", [error localizedDescription]);
 }
 
@@ -221,7 +227,6 @@
     
     [self.mainTableView reloadData];
     indicatorView.hidden = YES ;
-    [self.activityView stopAnimating];
     [activityView stopAnimating];
 }
 

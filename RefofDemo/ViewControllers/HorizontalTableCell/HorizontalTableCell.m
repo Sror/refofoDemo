@@ -450,23 +450,37 @@
 {
     NSLog(@"eshta");
     
-   // [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:alertTag inSection:0];
+    IssueCell *cell = (IssueCell *)[horizontalTableView cellForRowAtIndexPath:indexPath];
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        
+        cell.downloadedImage.hidden = NO ;
+        cell.progressView.hidden = YES ;
+        
+        [cell.progressView setProgress:0];
+    });
+    
+
+    
 }
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
     
     
-    UIAlertView *alert = [[UIAlertView alloc] init];
-    [alert setTitle:@"Error"];
-    [alert setMessage:@"An error occurred while downloading file, please make sure your iPad is connected to the Internet click and try again."];
-    [alert setDelegate:self];
-    [alert addButtonWithTitle:@"Try Again"];
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:alertTag inSection:0];
+    IssueCell *cell = (IssueCell *)[horizontalTableView cellForRowAtIndexPath:indexPath];
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        
+        cell.downloadedImage.hidden = NO ;
+        cell.progressView.hidden = YES ;
+        
+        [cell.progressView setProgress:0];
+    });
+
     
-    [alert setTag:1];
-    
-    [alert show];
-    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"" message:@"معذرة لا يمكنك تحميل العدد في الوقت الحالي؛ نظرًا لتعذر الاتصال بالإنترنت" delegate:nil cancelButtonTitle:@"إلغاء" otherButtonTitles:nil];
+    [alertView show];
+    [alertView release];
     
     
 }
@@ -511,6 +525,11 @@
                     
                     
                     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:alertView.tag inSection:0];
+                    
+                    int cellIndex = sectionSize-1-indexPath.row ;
+                    
+                    alertTag = alertView.tag;
+                    
                     IssueCell *cell=(IssueCell *)[self.horizontalTableView cellForRowAtIndexPath:indexPath];
                     
                     cell.userInteractionEnabled=NO;
@@ -518,32 +537,14 @@
                     
                     
                     
-                    ASIHTTPRequest *request;
-                   /* UIProgressView *theProgressView;
-                    progressAlert = [[UIAlertView alloc] initWithTitle:nil  message: @"Please wait..." delegate: self cancelButtonTitle: nil otherButtonTitles: nil];
-                    theProgressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0f, 100.0f, 220.0f, 9.0f)];
-                    
-                    [progressAlert addSubview:theProgressView];
-                    [progressAlert show];
-                    
-                    [theProgressView setProgressViewStyle: UIProgressViewStyleBar];
-                    
-                    [progressAlert show];*/
-                    
-                    
-                    
-                   // NSURL *theURL;
-                    
-                    
-                   // theURL= [NSURL URLWithString:[[issuesContents objectAtIndex:indexPath.row] valueForKey:@"url"]];
-                    request = [ASIHTTPRequest requestWithURL:[[issuesContents objectAtIndex:indexPath.row-1] valueForKey:@"url"]];
+                    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[[issuesContents objectAtIndex:cellIndex] valueForKey:@"url"]];
                     
                     NSFileManager *fileManager = [NSFileManager defaultManager];
                     NSError *error;
                     NSArray *paths = NSSearchPathForDirectoriesInDomains
                     (NSDocumentDirectory, NSUserDomainMask, YES);
                     NSString *documentsDir = [paths objectAtIndex:0];
-                    NSString *tempPath = [documentsDir stringByAppendingPathComponent:@"Temp"];
+                    NSString *tempPath = [documentsDir stringByAppendingPathComponent:@"Books"];
                     
                     BOOL isDir;
                     
@@ -570,46 +571,18 @@
                     
                     
                     
-                    NSString *destination = [tempPath stringByAppendingPathComponent:[[issuesContents objectAtIndex:indexPath.row-1] valueForKey:@"name"]];
-                    NSString *   temporaryFileDownloadPath=[tempPath stringByAppendingPathComponent:@"myFile.pdf.download"];
+                    NSString *destination = [tempPath stringByAppendingPathComponent:[[issuesContents objectAtIndex:cellIndex] valueForKey:@"name"]];
+                    NSString *   temporaryFileDownloadPath=[tempPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.download",[[issuesContents objectAtIndex:cellIndex]valueForKey:@"name"]]];
                     [UIApplication sharedApplication].idleTimerDisabled=YES;
                     [request setDownloadDestinationPath:destination];
                     [request setDownloadProgressDelegate:cell.progressView];
-                    
                     [request setTemporaryFileDownloadPath:temporaryFileDownloadPath];
                     [request setAllowResumeForFileDownloads:YES];
-                    
-                    
-                    
-                    
-                    //  NSLog (@"dddddddd     %@" ,destination);
-                    //   NSLog (@"tttttt       %@" ,temporaryFileDownloadPath);
-                    
-                    
-                    if ([fileManager fileExistsAtPath:temporaryFileDownloadPath]) {
-                        //     NSLog (@"tttttt tttttttt      %@" ,temporaryFileDownloadPath);
-                        
-                    }
-                    
-                    
-                    //  [CallingIrevoColtroller.view addSubview:progressAlert];
-                    
-                    
-                    
-                   /////// [request setDownloadProgressDelegate:theProgressView];
-                    
-                    //   [request setStartedBlock:^{[progressAlert show];}];
                     request.showAccurateProgress=YES;
                     [request setDelegate:self];
                     
                     [request setDidFailSelector:@selector(requestFailed:)];
                     [request setDidFinishSelector:@selector(downloadDidFinish:)];
-                    //  [request setDidStartSelector:@selector(downloadDidStart:)];
-                    
-                    
-                    
-                    
-                    
                     [request setRequestMethod:@"GET"];
                     [request startAsynchronous];
                     
