@@ -344,8 +344,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     if(shaking)
     {
         shaking = NO ;
@@ -360,25 +358,17 @@
     
     currentIssue = [self.issuesContents objectAtIndex:sectionSize-1-indexPath.row];
     
-    
-    
     int cellIndex= sectionSize-1-indexPath.row;
     NSString *issueNumber = [[self.issuesContents objectAtIndex:cellIndex] objectForKey:@"issue.id"];
     if([self isIssueDownloaded:issueNumber])
     {
         [self read:indexPath];
     }
-    
-    
-    
     else
     {
         if (cell.progressView.hidden == YES)
             [self DownloadBookAlert:indexPath];
     }
-    
-    
-    
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -448,7 +438,6 @@
 
 - (void)downloadDidFinish:(ASIHTTPRequest *)request
 {
-    NSLog(@"eshta");
     
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:alertTag inSection:0];
     IssueCell *cell = (IssueCell *)[horizontalTableView cellForRowAtIndexPath:indexPath];
@@ -485,8 +474,11 @@
     
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (alertView.tag==-2) {
-        if (buttonIndex == 1) {
+    
+    if (alertView.tag==-2)
+    {
+        if (buttonIndex == 1)
+        {
             NSDictionary *versionDict=[UserDefaults getDictionaryWithKey:APP_STATUS];
             NSString *updatedVersionUrl=[[versionDict objectForKey:@"validation"] objectForKey:@"update.url"];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:updatedVersionUrl]];
@@ -536,7 +528,7 @@
                     cell.progressView.hidden=NO;
                     
                     
-                    
+                   // NSLog(@"%d  ----  %@  ----- %@",cellIndex,[[issuesContents objectAtIndex:cellIndex] valueForKey:@"url"],[[issuesContents objectAtIndex:cellIndex] valueForKey:@"name"]);
                     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[[issuesContents objectAtIndex:cellIndex] valueForKey:@"url"]];
                     
                     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -554,13 +546,10 @@
                     {
                         success =  [fileManager createDirectoryAtPath:tempPath withIntermediateDirectories:YES attributes:Nil error:&error];
                         if (success) {
-                            NSLog(@"Success  %@",tempPath);
                             
                         }
                         else
                         {
-                            
-                            NSLog(@"Error   %@    %@",tempPath, [error description]);
                             
                             return;
                         }

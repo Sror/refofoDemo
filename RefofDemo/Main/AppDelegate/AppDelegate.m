@@ -16,6 +16,7 @@
     DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"hre7fbxfevcabs7" appSecret:@"u1ok8qyylh04rwd" root:kDBRootAppFolder];
     [DBSession setSharedSession:dbSession];
     
+    
     self.window                 = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     

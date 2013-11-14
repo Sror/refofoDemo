@@ -11,15 +11,18 @@
 #import "LoginViewController.h"
 #import "HorizontalTableCell.h"
 
+
 @interface HomeViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HorizontaleTableCellDelegate, UIGestureRecognizerDelegate, DBRestClientDelegate>
 {
     NSMutableArray *issuesFileNamesArray, *issuesFileUrlsArray, *issuesThumbinalArray, *reusableCells, *moreIssuesArray, *articlesStillDownloading, *files;
     
-    int issuesCount, issuePagingIndex, sectionSize, count ;
+    int issuesCount, issuePagingIndex, sectionSize, count, counter ;
     
     BOOL thereMoreIssues, shaking;
     
     NSString *issueName;
+    
+    NSThread *thread;
     
    // dispatch_queue_t DQueue ;
 }

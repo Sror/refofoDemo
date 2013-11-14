@@ -50,7 +50,12 @@
     self.issuesThumbinalArray     = [NSMutableArray array];
     self.articlesStillDownloading = [NSMutableArray array];
     
+    
     [[self restClient] loadMetadata:@"/"];
+    
+    
+    counter = -1;
+    
     
     
     
@@ -69,6 +74,7 @@
 }
 
 
+
 ////////////////////////////// metadata deleget////////////////////////////
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata
 {
@@ -81,7 +87,7 @@
     }
     if(self.issuesFileNamesArray.count > 0)
     {
-        [self loadUrls];
+       [self loadUrls];
     }
     else
     {
@@ -95,16 +101,20 @@
 
 - (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error
 {
-    NSLog(@"Error loading metadata: %@", error);
+    //NSLog(@"Error loading metadata: %@", error);
 }
 /////////////////////////////// load Streamable URL//////////////////////
 
 -(void)restClient:(DBRestClient *)restClient loadedStreamableURL:(NSURL *)url forFile:(NSString *)path
 {
     [issuesFileUrlsArray addObject:[url absoluteURL]];
+
     if(count == issuesFileNamesArray.count)
         [self getReusableCells];
     count++;
+    
+    if(counter < issuesFileUrlsArray.count)
+        [self loadUrls];
 }
 
 - (void)restClient:(DBRestClient*)restClient loadStreamableURLFailedWithError:(NSError *)error
@@ -114,8 +124,6 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"خطأ" message:@"خطأ في تحميل الملفات يرجى معاودة التحميل!" delegate:nil cancelButtonTitle:@"تم" otherButtonTitles:nil, nil];
     [alert show];
     [alert release];
-    
-    
    // NSLog(@"%@", [error localizedDescription]);
 }
 
@@ -139,27 +147,29 @@
 }
 
 - (void)restClient:(DBRestClient*)client loadedFile:(NSString*)localPath
-       contentType:(NSString*)contentType metadata:(DBMetadata*)metadata {
-    
-    NSLog(@"File loaded into path: %@", localPath);
+       contentType:(NSString*)contentType metadata:(DBMetadata*)metadata
+{
+   // NSLog(@"File loaded into path: %@", localPath);
 }
 
 - (void)restClient:(DBRestClient*)client loadFileFailedWithError:(NSError*)error {
-    NSLog(@"There was an error loading the file - %@", error);
+   // NSLog(@"There was an error loading the file - %@", error);
 }
-
 
 -(void) restClient:(DBRestClient *)client loadedThumbnail:(NSString *)destPath
 {
-    NSLog(@"destination name = %@",destPath);
+   // NSLog(@"destination name = %@",destPath);
 }
 
 
 -(void)loadUrls
 {
-    for (int i = 0 ; i != issuesFileNamesArray.count ; i++)
-       [[self restClient] loadStreamableURLForFile:[NSString stringWithFormat:@"/%@",[issuesFileNamesArray objectAtIndex:i]]];
+    counter++;
+    if(counter < issuesFileNamesArray.count)
+        [[self restClient] loadStreamableURLForFile:[NSString stringWithFormat:@"/%@",[issuesFileNamesArray objectAtIndex:counter]]];
 }
+
+
 
 -(void) loadThumbinals
 {
@@ -167,17 +177,18 @@
          [issuesThumbinalArray addObject:@"sample.jpg"];
     
     
-    NSString *DropBoxpath = [issuesFileNamesArray objectAtIndex:4];
+    //NSString *DropBoxpath = [issuesFileNamesArray objectAtIndex:4];
    // [[self restClient] loadFile:[NSString stringWithFormat:@"/%@",DropBoxpath] intoPath:[NSHomeDirectory() stringByAppendingPathComponent:([NSString stringWithFormat:@"Documents/%@",[issuesFileNamesArray objectAtIndex:4]]) ]];
     
-    [self.restClient loadThumbnail:[NSString stringWithFormat:@"/%@",DropBoxpath] ofSize:@"large" intoPath:[NSHomeDirectory() stringByAppendingPathComponent:([NSString stringWithFormat:@"Documents/%@",[issuesFileNamesArray objectAtIndex:4]]) ]];
+   // [self.restClient loadThumbnail:[NSString stringWithFormat:@"/%@",DropBoxpath] ofSize:@"large" intoPath:[NSHomeDirectory() stringByAppendingPathComponent:([NSString stringWithFormat:@"Documents/%@",[issuesFileNamesArray objectAtIndex:4]]) ]];
 }
 -(void)getReusableCells
 {
     [self loadThumbinals];
     
     NSMutableArray *issuesContents = [NSMutableArray array];
-    for (int i = 0 ; i != issuesFileNamesArray.count ; i++) {
+    for (int i = 0 ; i != issuesFileNamesArray.count ; i++)
+    {
         [issuesContents addObject: @{
                                      @"name"  : [[issuesFileNamesArray[i] componentsSeparatedByString:@"."] objectAtIndex:0]
                                     ,@"image" : issuesThumbinalArray[i]
@@ -185,6 +196,7 @@
                                     }];
     }
     
+   
     self.reusableCells=[NSMutableArray array];
     if ([issuesContents count] == 1)
     {

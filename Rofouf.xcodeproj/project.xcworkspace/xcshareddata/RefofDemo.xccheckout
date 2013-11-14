@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B6446694-3A03-492A-AC1E-66B903C0A630</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RefofDemo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>00607108-F7A6-4365-82DF-3A869C5CDE22</key>
+		<string>https://github.com/mohamedaeldin/refofoDemo</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RefofDemo.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>00607108-F7A6-4365-82DF-3A869C5CDE22</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mohamedaeldin/refofoDemo</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>00607108-F7A6-4365-82DF-3A869C5CDE22</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>00607108-F7A6-4365-82DF-3A869C5CDE22</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Rofouf</string>
+		</dict>
+	</array>
+</dict>
+</plist>
